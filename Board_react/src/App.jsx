@@ -1,5 +1,5 @@
 import './App.css';
-import { useReducer, useRef } from "react";
+import { useReducer, useRef, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";
@@ -30,16 +30,37 @@ const mockData = [
   },
 ]
 
+function reducer(state, action) {
+  switch(action.type){
+    case 'REGIST':
+      return [action.data, ...state];
+    case 'UPDATE':
+      return state.map((item) => {
+        String(item.id) === String(action.data.id)
+        ? action.data
+        : item
+      });
+    case 'DELETE':
+      return state.filter((item) => {
+        String(item.id) !== String(action.id)
+      });
+    default:
+      return state;
+  }
+}
+
+const BoardStateContext = createContext();    // 상태관리용 context
+const BoardDispatchContext = createContext(); // dispatch용 context
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(4);
 
-  const onRest = (createdDate, title, content, wrtier) => {
+  const onRegist = (createdDate, title, content, writer) => {
     dispatch({
       type: "REGIST",
       data: {
-        id: idRef++,
+        id: idRef.current++,
         createdDate,
         title,
         content,
@@ -48,14 +69,34 @@ function App() {
     })
   }
 
+  const onUpdate = (id, createdDate, title, content) => {
+    dispatch({
+      type: "UPDATE",
+      data: {
+        id, createdDate, title, content
+      }
+    })
+  }
+
+  const onDelete = (id) => {
+    dispatch({
+      type: "DELETE",
+      id
+    })
+  }
+
   return (
     <>
-      <Routes>
-        <Route path="/" element={ <Home /> } />
-        <Route path="/detail/:id" element={ <Detail /> } />
-        <Route path="/edit/:id" element={ <Edit /> } />
-        <Route path="*" element={ <Notfound /> } />
-      </Routes>
+      <BoardStateContext.Provider value={data}>
+        <BoardDispatchContext.Provider value={{onRegist, onUpdate, onDelete}}>
+          <Routes>
+            <Route path="/" element={ <Home /> } />
+            <Route path="/detail/:id" element={ <Detail /> } />
+            <Route path="/edit/:id" element={ <Edit /> } />
+            <Route path="*" element={ <Notfound /> } />
+          </Routes>
+        </BoardDispatchContext.Provider>
+      </BoardStateContext.Provider>
     </>
   )
 }
