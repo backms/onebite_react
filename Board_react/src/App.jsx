@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Detail from "./pages/Detail";
 import Edit from "./pages/Edit";
 import Notfound from './pages/NotFound';
+import Regist from "./pages/Regist.jsx";
 
 const mockData = [
   {
@@ -49,8 +50,8 @@ function reducer(state, action) {
   }
 }
 
-const BoardStateContext = createContext();    // 상태관리용 context
-const BoardDispatchContext = createContext(); // dispatch용 context
+export const BoardStateContext = createContext();    // 상태관리용 context
+export const BoardDispatchContext = createContext(); // dispatch용 context
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
@@ -91,6 +92,7 @@ function App() {
         <BoardDispatchContext.Provider value={{onRegist, onUpdate, onDelete}}>
           <Routes>
             <Route path="/" element={ <Home /> } />
+            <Route path="/regist" element={ <Regist />} />
             <Route path="/detail/:id" element={ <Detail /> } />
             <Route path="/edit/:id" element={ <Edit /> } />
             <Route path="*" element={ <Notfound /> } />

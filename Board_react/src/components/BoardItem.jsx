@@ -1,13 +1,18 @@
 import "./BoardItem.css";
+import { useNavigate } from "react-router-dom";
 
+const BoardItem = ({id, createdDate, title, content, writer}) => {
+    const nav = useNavigate();
 
-const BoardItem = () => {
     return (
         <div className="BoardItem">
-            <div className="number_section">1</div>
-            <div className="title_section">title</div>
-            <div className="writer_sction">홍길동</div>
-            <div className="date_sction">2024-09-03</div>
+            <div className="number_section">{id}</div>
+            <div
+                onClick={() => nav(`/detail/${id}`)}
+                className="title_section"
+            >{title}</div>
+            <div className="writer_sction">{writer}</div>
+            <div className="date_sction">{new Date(createdDate).toLocaleDateString()}</div>
         </div>
     )
 }
