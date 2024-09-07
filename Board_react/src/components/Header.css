@@ -9,8 +9,8 @@
     display: flex;
 }
 
-.Header .header_cneter {
-    width: 100%;
+.Header .header_center {
+    width: 50%;
     font-size: 25px;
     justify-content: center;
 }
