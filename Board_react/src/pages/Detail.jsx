@@ -3,6 +3,7 @@ import Header from "../components/Header.jsx";
 import Button from "../components/Button.jsx";
 import useBoard from "../hooks/useBoard";
 import usePageTitle from "../hooks/usePageTitle.jsx";
+import Viewer from "../components/Viewer.jsx";
 
 const Detail = () => {
     const params = useParams();
@@ -32,7 +33,7 @@ const Detail = () => {
                     />
                 }
             />
-
+            <Viewer title={title} content={content} />
         </div>
     )
 }
