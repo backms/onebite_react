@@ -44,3 +44,19 @@
     font-weight: 400;
     line-height: 2.5;
 }
+
+.Viewer .writer_wrapper {
+    width: 100%;
+    background-color: rgb(236,236,236);
+    border-radius: 5px;
+
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+.Viewer .writer_wrapper > p {
+    padding: 0px 20px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 400;
+}

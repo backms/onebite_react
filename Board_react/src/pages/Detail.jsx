@@ -33,7 +33,7 @@ const Detail = () => {
                     />
                 }
             />
-            <Viewer title={title} content={content} />
+            <Viewer title={title} content={content} writer={writer} />
         </div>
     )
 }

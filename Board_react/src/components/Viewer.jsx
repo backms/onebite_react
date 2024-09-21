@@ -1,6 +1,6 @@
 import "./Viewer.css";
 
-const Viewer = ({title,content}) => {
+const Viewer = ({title,content,writer}) => {
 
     return (
         <div className="Viewer">
@@ -12,6 +12,10 @@ const Viewer = ({title,content}) => {
                 <h4>내용</h4>
                 <div className="content_wrapper">
                     <p>{content}</p>
+                </div>
+                <h4>작성자</h4>
+                <div className="writer_wrapper">
+                    <p>{writer}</p>
                 </div>
             </section>
         </div>
