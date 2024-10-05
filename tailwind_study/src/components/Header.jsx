@@ -19,7 +19,7 @@ import {
     SquaresPlusIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 
 const products = [
     { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -33,7 +33,7 @@ const callsToAction = [
     { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]
 
-export default () => {
+const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     return (
@@ -160,3 +160,5 @@ export default () => {
         </header>
     )
 }
+
+export default Header

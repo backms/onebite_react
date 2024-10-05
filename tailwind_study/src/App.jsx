@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import './App.css'
-import Header from './components/Header';
-import Example from "./components/Example.jsx";
+import { Routes, Route } from "react-router-dom";
+import Board from "./pages/Board";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <Header />
+        <Routes>
+            <Route path="/" element={ <Board/> } />
+            <Route path="*" element={ <PageNotFound /> } />
+        </Routes>
     </>
   )
 }
