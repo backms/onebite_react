@@ -2,7 +2,7 @@ import Header from "../components/Header";
 
 const Board = () => {
     return (
-        <Header />
+        <></>
     )
 }
 
