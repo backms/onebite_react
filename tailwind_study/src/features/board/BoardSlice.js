@@ -28,7 +28,8 @@ const boardSlice = createSlice({
             })
             .addCase(fetchBoards.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.board = action.payload;
+                state.boards = action.payload;
+                state.error = null;
             })
             .addCase(fetchBoards.rejected, (state, action) => {
                 state.status = 'failed';
@@ -36,8 +37,9 @@ const boardSlice = createSlice({
             })
             .addCase(fetchBoardById.fulfilled, (state, action) => {
                 state.selectedBoard = action.payload;
+                state.error = null;
             });
     },
 });
 
-export default boardSlice;
+export default boardSlice.reducer;
