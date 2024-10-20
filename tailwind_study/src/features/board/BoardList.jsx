@@ -1,39 +1,61 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {fetchBoards} from "./BoardSlice.js";
 import BoardItem from "./BoardItem.jsx";
+import Navigator from "../../components/Navigator.jsx";
+import {useNavigate} from "react-router-dom";
 
 
 const BoardList = () => {
+    const nav = useNavigate();
     const dispatch = useDispatch();
     const boards = useSelector((state) => state.board.boards);
-    const boardStatus = useSelector((state) => state.board.status);;
+    const boardStatus = useSelector((state) => state.board.status);
+    const error = useSelector((state) => state.board.error);
 
     useEffect(() => {
         if(boardStatus === 'idle'){
             dispatch(fetchBoards());
         }
-    }, [boardStatus, dispatch])
+    }, [boardStatus, dispatch]);
 
-    // 임시 데이터
-    const posts = [
-        { id: 1, title: "첫 번째 게시글입니다.", author: "홍길동", date: "2024-10-15", views: 15 },
-        { id: 2, title: "두 번째 게시글입니다.", author: "김철수", date: "2024-10-14", views: 23 },
-        { id: 3, title: "세 번째 게시글입니다.", author: "이영희", date: "2024-10-13", views: 7 },
-    ];
+    let content;
+
+    if (boardStatus === 'loading') {
+        content = <div>Loading...</div>;
+    } else if (boardStatus === 'succeeded') {
+        content = boards.map((board) => (
+            <BoardItem board={board} key={board.id}/>
+        ));
+    } else if (boardStatus === 'failed') {
+        content = <div>{error}</div>;
+    }
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <main className="max-w-3xl mx-auto mt-8 px-4">
-                <h2 className="text-2xl font-bold mb-4">게시판</h2>
-                <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                    {posts.map((post) => (
-                        <BoardItem key={post.id} {...post} />
-                    ))}
+        <div className="min-h-screen bg-gray-50">
+            <main className="pt-20 max-w-7xl mx-auto px-4 pb-12">
+
+                <Navigator/>
+
+                <div className="grid gap-6 mb-8">
+                    {content}
                 </div>
-                <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                    글쓰기
-                </button>
+
+                {/*
+                <div className="flex justify-center">
+                    todo - 페이징 영역
+                </div>
+                */}
+
+                <div className="flex justify-end mb-6">
+                    <button
+                        className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm hover:shadow-md"
+                        onClick={() => nav("/boardForm")}
+                    >
+                        글쓰기
+                    </button>
+                </div>
+
             </main>
         </div>
     );

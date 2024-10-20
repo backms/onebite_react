@@ -1,12 +1,33 @@
-const BoardItem = ({ title, author, date, views }) => (
-    <div className="flex items-center justify-between border-b border-gray-200 py-3">
-        <div className="flex-1 ml-4">
-            <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-            <p className="text-sm text-gray-500">{author}</p>
+import React from "react";
+import { Search, Bell, MessageSquare, User, Heart, ChevronDown } from 'lucide-react';
+
+const BoardItem = ({ board }) => (
+    <div key={board.id} className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">{board.title}</h2>
+            <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
+                    <User className="h-4 w-4 text-gray-600"/>
+                </div>
+                <span className="text-sm text-gray-600">{board.writer}</span>
+            </div>
         </div>
-        <div className="text-sm text-gray-500 mr-4">
-            <span className="mr-4">{date}</span>
-            <span>조회 {views}</span>
+
+        <p className="text-gray-600 mb-4">
+            {board.preview}
+        </p>
+
+        <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <span className="flex items-center">
+                    <MessageSquare className="h-4 w-4 mr-1"/> 댓글 {board.comments}
+                  </span>
+                <span>조회수 {board.views}</span>
+                <span className="flex items-center">
+                    <Heart className="h-4 w-4 mr-1"/> 좋아요 {board.likes}
+                  </span>
+            </div>
+            <span className="text-sm text-gray-500">{board.date}</span>
         </div>
     </div>
 );

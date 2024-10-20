@@ -7,6 +7,7 @@ import BoardList from "./features/board/BoardList.jsx";
 import Home from "./components/Home.jsx";
 import { Provider } from "react-redux";
 import store from "./app/store.js";
+import BoardForm from "./features/board/BoardForm.jsx";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/board" element={ <BoardList /> } />
+                <Route path="/boardForm" element={ <BoardForm /> } />
                 <Route path="*" element={ <PageNotFound /> } />
             </Routes>
         </Provider>

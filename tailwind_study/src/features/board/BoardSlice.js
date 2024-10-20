@@ -1,16 +1,30 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-
-export const fetchBoards = createAsyncThunk('board/fetchPosts', async () => {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+// 게시글 목록 조회
+export const fetchBoards = createAsyncThunk(
+    'board/fetchBoards', async () => {
+    const response = await axios.get('/api/board?page=1&size=5');
     return response.data;
 });
 
-export const fetchBoardById = createAsyncThunk('board/fetchBoardById', async (id) => {
-    const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+// 게시글 단건 조회
+export const fetchBoardById = createAsyncThunk(
+    'board/fetchBoardById', async (id) => {
+    const response = await axios.get(`/api/board/${id}`);
     return response.data;
 });
+
+export const createBoard = createAsyncThunk(
+    'board/addBoard',
+    async (boardData, {rejectWithValue}) => {
+    try {
+        const response = await axios.post("/api/board", boardData);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+})
 
 const boardSlice = createSlice({
     name: "board",
@@ -20,9 +34,16 @@ const boardSlice = createSlice({
         status: 'idle',
         error: null,
     },
-    reducers: {},       // 동기 액션을 처리하는 리듀서
+    reducers: {       // 동기 액션을 처리하는 리듀서
+        addBoard: (state, action) => {
+            state.boards.push({
+                ...action.payload,
+            });
+        }
+    },
     extraReducers: (builder) => {       // 비동기 액션을 처리하는 추가 리듀서
         builder
+            // 게시글 목록 조회
             .addCase(fetchBoards.pending, (state) => {
                 state.status = 'loading';
             })
@@ -33,11 +54,32 @@ const boardSlice = createSlice({
             })
             .addCase(fetchBoards.rejected, (state, action) => {
                 state.status = 'failed';
-                state.board = action.error.message;
+                state.error = action.error.message;
+            })
+            // 게시글 단건 조회
+            .addCase(fetchBoardById.pending, (state, action) => {
+                state.status = 'loading';
             })
             .addCase(fetchBoardById.fulfilled, (state, action) => {
                 state.selectedBoard = action.payload;
                 state.error = null;
+            })
+            .addCase(fetchBoardById.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            // 게시글 등록
+            .addCase(createBoard.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(createBoard.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.boards.push(action.payload);
+                state.error = null;
+            })
+            .addCase(createBoard.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
             });
     },
 });
