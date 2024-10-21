@@ -36,10 +36,10 @@ const BoardForm = () => {
                 writer: "",
             });
             alert("게시글이 등록되었습니다.");
-            nav(-1, {replace:true});
+            nav("/board", {replace:true});
         } catch (err) {
             alert("게시글 등록에 실패했습니다. " + err.message);
-            nav(-1, {replace:true});
+            nav("/board", {replace:true});
         }
 
     }
@@ -72,8 +72,8 @@ const BoardForm = () => {
                             <input
                                 type="text"
                                 id="author"
-                                name="author"
-                                value={formData.author}
+                                name="writer"
+                                value={formData.writer}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                                 placeholder="작성자명을 입력하세요"

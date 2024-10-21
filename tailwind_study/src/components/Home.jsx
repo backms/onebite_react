@@ -53,6 +53,15 @@ const Home = () => {
                         더 보기
                     </button>
                 </div>
+                <div className="flex justify-end mb-6">
+                    <button
+                        className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm hover:shadow-md"
+                        onClick={() => nav("/boardForm")}
+                    >
+                        글쓰기
+                    </button>
+                </div>
+
             </main>
         </div>
     )

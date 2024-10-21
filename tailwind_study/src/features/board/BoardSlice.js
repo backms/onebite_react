@@ -20,7 +20,7 @@ export const createBoard = createAsyncThunk(
     async (boardData, {rejectWithValue}) => {
     try {
         const response = await axios.post("/api/board", boardData);
-        return response.data;
+        return response;
     } catch (error) {
         return rejectWithValue(error);
     }
@@ -34,13 +34,7 @@ const boardSlice = createSlice({
         status: 'idle',
         error: null,
     },
-    reducers: {       // 동기 액션을 처리하는 리듀서
-        addBoard: (state, action) => {
-            state.boards.push({
-                ...action.payload,
-            });
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {       // 비동기 액션을 처리하는 추가 리듀서
         builder
             // 게시글 목록 조회
@@ -70,15 +64,15 @@ const boardSlice = createSlice({
             })
             // 게시글 등록
             .addCase(createBoard.pending, (state) => {
-                state.status = 'loading';
+                // state.status = 'loading';
             })
             .addCase(createBoard.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.status = 'idle';
                 state.boards.push(action.payload);
                 state.error = null;
             })
             .addCase(createBoard.rejected, (state, action) => {
-                state.status = 'failed';
+                // state.status = 'failed';
                 state.error = action.error.message;
             });
     },

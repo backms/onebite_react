@@ -14,6 +14,7 @@ const BoardList = () => {
     const error = useSelector((state) => state.board.error);
 
     useEffect(() => {
+        console.log("boardStatus : " + boardStatus);
         if(boardStatus === 'idle'){
             dispatch(fetchBoards());
         }
