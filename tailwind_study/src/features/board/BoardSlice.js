@@ -10,8 +10,8 @@ export const fetchBoards = createAsyncThunk(
 
 // 게시글 단건 조회
 export const fetchBoardById = createAsyncThunk(
-    'board/fetchBoardById', async (id) => {
-    const response = await axios.get(`/api/board/${id}`);
+    'board/fetchBoardById', async (boardId) => {
+    const response = await axios.get(`/api/board/${boardId}`);
     return response.data;
 });
 
@@ -20,7 +20,7 @@ export const createBoard = createAsyncThunk(
     async (boardData, {rejectWithValue}) => {
     try {
         const response = await axios.post("/api/board", boardData);
-        return response;
+        return response.data;
     } catch (error) {
         return rejectWithValue(error);
     }
@@ -55,6 +55,7 @@ const boardSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchBoardById.fulfilled, (state, action) => {
+                state.status = 'succeeded';
                 state.selectedBoard = action.payload;
                 state.error = null;
             })
@@ -63,11 +64,8 @@ const boardSlice = createSlice({
                 state.error = action.error.message;
             })
             // 게시글 등록
-            .addCase(createBoard.pending, (state) => {
-                // state.status = 'loading';
-            })
             .addCase(createBoard.fulfilled, (state, action) => {
-                state.status = 'idle';
+                state.status = 'idle';  // 글 목록 이동 시 목록 재조회를 위한,,
                 state.boards.push(action.payload);
                 state.error = null;
             })

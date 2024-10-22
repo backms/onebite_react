@@ -9,26 +9,27 @@ import {useNavigate} from "react-router-dom";
 const BoardList = () => {
     const nav = useNavigate();
     const dispatch = useDispatch();
-    const boards = useSelector((state) => state.board.boards);
-    const boardStatus = useSelector((state) => state.board.status);
-    const error = useSelector((state) => state.board.error);
+    const { boards, status, error } = useSelector((state) => state.board);
 
     useEffect(() => {
-        console.log("boardStatus : " + boardStatus);
-        if(boardStatus === 'idle'){
+        if(status === 'idle'){
             dispatch(fetchBoards());
         }
-    }, [boardStatus, dispatch]);
+    }, [status, dispatch]);
 
     let content;
 
-    if (boardStatus === 'loading') {
+    if (status === 'loading') {
         content = <div>Loading...</div>;
-    } else if (boardStatus === 'succeeded') {
-        content = boards.map((board) => (
-            <BoardItem board={board} key={board.id}/>
-        ));
-    } else if (boardStatus === 'failed') {
+    } else if (status === 'succeeded') {
+        if(!boards){
+            content = <div>게시글이 없습니다.</div>;
+        } else {
+            content = boards.map((board) => (
+                <BoardItem board={board} key={board.id}/>
+            ));
+        }
+    } else if (status === 'failed') {
         content = <div>{error}</div>;
     }
 

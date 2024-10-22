@@ -8,6 +8,7 @@ import Home from "./components/Home.jsx";
 import { Provider } from "react-redux";
 import store from "./app/store.js";
 import BoardForm from "./features/board/BoardForm.jsx";
+import BoardDetail from "./features/board/BoardDetail.jsx";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/board" element={ <BoardList /> } />
+                <Route path="/boardDetail/:boardId" element={ <BoardDetail /> } />
                 <Route path="/boardForm" element={ <BoardForm /> } />
                 <Route path="*" element={ <PageNotFound /> } />
             </Routes>
