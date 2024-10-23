@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { createBoard } from './BoardSlice.js';
-import { useNavigate } from "react-router-dom";
+import { createBoard, updateBoard, fetchBoardById, clearSelectedBoard } from './BoardSlice.js';
+import {useNavigate, useParams} from "react-router-dom";
 
 
 const BoardForm = () => {
+    const { boardId } = useParams();
     const nav = useNavigate();
     const dispatch = useDispatch();
-    const [formData, setFormData] = useState({
+    const { selectedBoard, status, error } = useSelector(state => state.board);
+    const [boardData, setBoardData] = useState({
         title: "",
         content: "",
         writer: ""
@@ -15,7 +17,7 @@ const BoardForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setBoardData(prev => ({
             ...prev,
             [name]: value
         }));
@@ -23,19 +25,18 @@ const BoardForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(!formData.title || !formData.content || !formData.writer) {
+        if(!boardData.title || !boardData.content || !boardData.writer) {
             alert("필수 항목을 입력해주세요.");
             return;
         }
 
         try {
-            dispatch(createBoard(formData));
-            setFormData({
-                title: "",
-                content: "",
-                writer: "",
-            });
-            alert("게시글이 등록되었습니다.");
+            dispatch(updateBoard({
+                boardId,
+                boardData : {...boardData, id: boardId}
+            }));
+
+            alert("게시글이 수정되었습니다.");
             nav("/board", {replace:true});
         } catch (err) {
             alert("게시글 등록에 실패했습니다. " + err.message);
@@ -44,11 +45,21 @@ const BoardForm = () => {
 
     }
 
+    useEffect(() => {
+        dispatch(fetchBoardById(boardId));
+    }, [boardId, dispatch]);
+
+    useEffect(() => {
+        boardData.title = selectedBoard.title;
+        boardData.content = selectedBoard.content;
+        boardData.writer = selectedBoard.writer;
+    }, [selectedBoard]);
+
     return (
         <div className="min-h-screen bg-gray-50">
             <main className="pt-20 max-w-7xl mx-auto px-4 pb-12">
                 <div className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow">
-                    <h2 className="text-2xl font-bold mb-6">게시글 작성</h2>
+                    <h2 className="text-2xl font-bold mb-6">게시글 수정</h2>
                     <form>
                         <div className="mb-4">
                             <label className="block text-gray-700 font-bold mb-2" htmlFor="title">
@@ -58,7 +69,7 @@ const BoardForm = () => {
                                 type="text"
                                 id="title"
                                 name="title"
-                                value={formData.title}
+                                value={boardData.title}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                                 placeholder="제목을 입력하세요"
@@ -73,7 +84,7 @@ const BoardForm = () => {
                                 type="text"
                                 id="author"
                                 name="writer"
-                                value={formData.writer}
+                                value={boardData.writer}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                                 placeholder="작성자명을 입력하세요"
@@ -87,7 +98,7 @@ const BoardForm = () => {
                             <textarea
                                 id="content"
                                 name="content"
-                                value={formData.content}
+                                value={boardData.content}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500 h-32"
                                 placeholder="내용을 입력하세요"
@@ -105,7 +116,7 @@ const BoardForm = () => {
                                 className="px-6 py-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
                                 onClick={handleSubmit}
                             >
-                                등록
+                                완료
                             </button>
                         </div>
                     </form>

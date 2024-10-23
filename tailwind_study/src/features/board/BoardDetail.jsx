@@ -28,7 +28,7 @@ const BoardDetail = () => {
         <div className="min-h-screen bg-gray-50">
             <main className="pt-20 max-w-7xl mx-auto px-4 pb-12">
                 <div className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow">
-                    <h2 className="text-2xl font-bold mb-6">게시글 작성</h2>
+                    <h2 className="text-2xl font-bold mb-6">게시글 상세</h2>
                     <form>
                         <div className="mb-4">
                             <label className="block text-gray-700 font-bold mb-2" htmlFor="title">
@@ -77,6 +77,12 @@ const BoardDetail = () => {
                                 onClick={() => nav("/board")}
                             >
                                 목록
+                            </button>
+                            <button
+                                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                                onClick={() => nav(`/boardEdit/${boardId}`)}
+                            >
+                                수정
                             </button>
                         </div>
                     </form>
